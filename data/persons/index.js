@@ -23,7 +23,8 @@ const getById = async(xposition) => {
         //const sqlQueries = await utils.loadSqlQueries('persons');
         const byId = await pool.request()
                                 .input('xposition',sql.VarChar(50), xposition)
-                                .query("select * from pdmst where xposition = @xposition");
+                                .execute('makeaselectall');
+                                //.query("select * from pdmst where xposition = @xposition");
 
         return byId.recordset;
     } catch (error) {
@@ -31,23 +32,41 @@ const getById = async(xposition) => {
     }
 }
 
-
-
 const creatperson = async (personData) => {
     try {
         let pool = await sql.connect(config.sql);
        // const sqlQueries = await utils.loadSqlQueries('persons');
         const insertperson = await pool.request()
-                            .input('xname', sql.VarChar(50), personData.xname)
-                            .input('xposition', sql.VarChar(50), personData.xposition)
-                            .input('xstaff', sql.VarChar(50), personData.xstaff)  
-                            .execute('selectall');                         
-                           // .query("insert into pdmst(ztime,zutime,zauserid,zuuserid,zid,xstaff,xposition,xname) values ('2017-04-02 11:10:23.893','2017-05-02 17:38:25.020','raad','300',100000,@xstaff,@xposition,@xname)");                            
+                            .input('zid', sql.Int, personData.zid)
+                            .input('user', sql.VarChar(50), personData.user)
+                            .input('staff', sql.VarChar(50), personData.staff) 
+                            .input('yearperdate', sql.Int, personData.yearperdate) 
+                            .input('year', sql.Int, personData.year)  
+                            .input('typeleave', sql.VarChar(50), personData.typeleave) 
+                            .execute('zabsp_leaveapply');                         
+
         return insertperson.recordset;
     } catch (error) {
         return error.message;
     }
 }
+
+
+// const creatperson = async (personData) => {
+//     try {
+//         let pool = await sql.connect(config.sql);
+//        // const sqlQueries = await utils.loadSqlQueries('persons');
+//         const insertperson = await pool.request()
+//                             .input('xname', sql.VarChar(50), personData.xname)
+//                             .input('xposition', sql.VarChar(50), personData.xposition)
+//                             .input('xstaff', sql.VarChar(50), personData.xstaff)  
+//                             .execute('selectall');                         
+//                            // .query("insert into pdmst(ztime,zutime,zauserid,zuuserid,zid,xstaff,xposition,xname) values ('2017-04-02 11:10:23.893','2017-05-02 17:38:25.020','raad','300',100000,@xstaff,@xposition,@xname)");                            
+//         return insertperson.recordset;
+//     } catch (error) {
+//         return error.message;
+//     }
+// }
 const UpdatePerson = async (data, xposition) => {
     try {
         let pool = await sql.connect(config.sql);

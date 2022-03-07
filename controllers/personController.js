@@ -38,7 +38,7 @@ const upPerson = async (req, res, next) => {
     try {
         const xposition =  req.params.xposition;
         const data = req.body;
-        const up = await personData.creatperson(data);
+        const up = await personData.UpdatePerson(data);
         res.send(up);
     } 
     catch (error) {
